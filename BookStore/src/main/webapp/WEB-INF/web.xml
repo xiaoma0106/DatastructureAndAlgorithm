@@ -19,6 +19,11 @@
         <servlet-class>com.mjh.web.servlet.controller.UserServlet</servlet-class>
     </servlet>
     
+    <servlet>
+        <servlet-name>BookServlet</servlet-name>
+        <servlet-class>com.mjh.web.servlet.controller.BookServlet</servlet-class>
+    </servlet>
+    
     <servlet-mapping>
         <servlet-name>RegistServlet</servlet-name>
         <url-pattern>/registServlet</url-pattern>
@@ -32,5 +37,10 @@
     <servlet-mapping>
         <servlet-name>UserServlet</servlet-name>
         <url-pattern>/userServlet</url-pattern>
+    </servlet-mapping>
+    
+    <servlet-mapping>
+        <servlet-name>BookServlet</servlet-name>
+        <url-pattern>/manager/bookServlet</url-pattern>
     </servlet-mapping>
 </web-app>

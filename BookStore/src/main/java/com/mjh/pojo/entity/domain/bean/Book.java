@@ -30,9 +30,6 @@ public class Book {
         }
     }
 
-    public Book(String 如何成为百万富翁, int i, String mjh, int sales, int stock, Object imgPath) {
-    }
-
     public Integer getId() {
         return id;
     }
