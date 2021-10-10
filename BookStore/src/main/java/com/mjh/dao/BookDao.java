@@ -14,4 +14,9 @@ public interface BookDao {
     public int updateBook(Book book);
     public Book queryBookById(Integer id);
     public List<Book> queryBooks();
+    public Integer queryForPageTotalCount();
+    public List<Book> queryForItems(int begin,int pageSize);
+    public Integer queryForPageTotalCount(int min,int max);
+    public List<Book> queryForItems(int begin,int pageSize,int min,int max);
+
 }

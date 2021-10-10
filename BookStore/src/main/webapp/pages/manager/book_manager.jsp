@@ -7,10 +7,11 @@
     <%@ include file="/pages/common/header.jsp" %>
     <title>图书管理</title>
     <script type="text/javascript">
-        $(function (){
-            $("a.deleteClass").click(function (){
-                return confirm("你确定要删除{"+$(this).parent().parent().find("td:first").text()+"]?");
+        $(function () {
+            $("a.deleteClass").click(function () {
+                return confirm("你确定要删除{" + $(this).parent().parent().find("td:first").text() + "]?");
             });
+
         });
     </script>
 </head>
@@ -34,15 +35,15 @@
             <td>库存</td>
             <td colspan="2">操作</td>
         </tr>
-        <c:forEach items="${requestScope.books}" var="book">
+        <c:forEach items="${requestScope.page.items}" var="book">
             <tr>
                 <td>${book.name}</td>
                 <td>${book.price}</td>
                 <td>${book.author}</td>
                 <td>${book.sales}</td>
                 <td>${book.stock}</td>
-                <td><a href="manager/bookServlet?action=getBook&id=${book.id}">修改</a> </td>
-                <td><a class="deleteClass" href="manager/bookServlet?action=del&id=${book.id}">删除</a> </td>
+                <td><a href="manager/bookServlet?action=getBook&id=${book.id}&pageNo=${requestScope.page.pageNo}">修改</a></td>
+                <td><a class="deleteClass" href="manager/bookServlet?action=del&id=${book.id}&pageNo=${requestScope.page.pageNo}">删除</a></td>
             </tr>
         </c:forEach>
 
@@ -56,7 +57,8 @@
             <td><a href="pages/manager/book_edit.jsp">添加图书</a></td>
         </tr>
     </table>
-</div>
+
+    <%@include file="/pages/common/page_nav.jsp"%>
 
 
 <%@ include file="/pages/common/footer.jsp" %>

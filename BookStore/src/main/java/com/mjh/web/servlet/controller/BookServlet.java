@@ -1,7 +1,9 @@
 package com.mjh.web.servlet.controller;
 
 import com.mjh.pojo.entity.domain.bean.Book;
+import com.mjh.pojo.entity.domain.bean.Page;
 import com.mjh.service.impl.BookServiceImpl;
+import com.mjh.utils.WebUtils;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -30,7 +32,7 @@ public class BookServlet extends BaseServlet{
 
         bookService.updateBook(book);
 
-        resp.sendRedirect(req.getContextPath()+"/manager/bookServlet?action=list");
+        resp.sendRedirect(req.getContextPath()+"/manager/bookServlet?action=page&pageNo="+req.getParameter("pageNo"));
 
     }
     //获取指定id的图书信息用于回显
@@ -47,7 +49,7 @@ public class BookServlet extends BaseServlet{
         Integer id=Integer.parseInt(req.getParameter("id"));
         bookService.deleteBookById(id);
 
-        resp.sendRedirect(req.getContextPath()+"/manager/bookServlet?action=list");
+        resp.sendRedirect(req.getContextPath()+"/manager/bookServlet?action=page&pageNo="+req.getParameter("pageNo"));
 
     }
     //添加一个图书
@@ -61,7 +63,7 @@ public class BookServlet extends BaseServlet{
         bookService.addBook(book);
 
         //添加完成后,显示所有图书信息
-        resp.sendRedirect(req.getContextPath()+"/manager/bookServlet?action=list");
+        resp.sendRedirect(req.getContextPath()+"/manager/bookServlet?action=page");
 //        list(req,resp);
     }
 
@@ -72,5 +74,19 @@ public class BookServlet extends BaseServlet{
         req.setAttribute("books",books);
 
         req.getRequestDispatcher("/pages/manager/book_manager.jsp").forward(req,resp);
+    }
+
+
+    //获取指定页面的图书数据
+    public void page(HttpServletRequest req,HttpServletResponse resp) throws ServletException,IOException{
+        Integer pageNo= WebUtils.parseInt(req.getParameter("pageNo"),1);
+        Integer pageSize=WebUtils.parseInt(req.getParameter("pageSize"), Page.PAGE_SIZE);
+
+        Page<Book> page=bookService.page(pageNo,pageSize);
+        page.setUrl("manager/bookServlet?action=page");
+        req.setAttribute("page",page);
+
+        req.getRequestDispatcher("/pages/manager/book_manager.jsp").forward(req,resp);
+
     }
 }

@@ -1,6 +1,7 @@
 package com.mjh.service;
 
 import com.mjh.pojo.entity.domain.bean.Book;
+import com.mjh.pojo.entity.domain.bean.Page;
 
 import java.util.List;
 
@@ -14,4 +15,7 @@ public interface BookService {
     public void updateBook(Book book);
     public Book queryBookById(Integer id);
     public List<Book> queryBooks();
+    public Page<Book> page(Integer pageNo,Integer pageSize);
+
+    public Page<Book> pageByPrice(Integer pageNo,Integer pageSize,Integer min,Integer max);
 }
