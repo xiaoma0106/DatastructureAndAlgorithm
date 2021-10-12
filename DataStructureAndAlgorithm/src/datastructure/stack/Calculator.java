@@ -3,7 +3,7 @@ package datastructure.stack;
 /**
  * @author mjh
  * @date 2021-10-12 14:36
- * 栈实现计算器功能,括号除外
+ * (中缀表达式)栈实现计算器功能,括号除外
  */
 public class Calculator {
     public static void main(String[] args) {
