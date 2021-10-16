@@ -5,6 +5,7 @@ import com.alibaba.druid.pool.DruidDataSourceFactory;
 import javax.sql.DataSource;
 import java.io.InputStream;
 import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.Properties;
 
 /**
@@ -13,6 +14,7 @@ import java.util.Properties;
  */
 public class JdbcUtils {
     private static DataSource dataSource;
+    private static ThreadLocal<Connection> conns=new ThreadLocal<Connection>();
 
     static {
         try {
@@ -26,24 +28,63 @@ public class JdbcUtils {
     }
 
     public static Connection getConnection(){
-        Connection con=null;
-
-        try {
-            con=dataSource.getConnection();
-        }catch (Exception e){
-            e.printStackTrace();
+        Connection con=conns.get();
+        if (con == null) {
+            try {
+                con = dataSource.getConnection();
+                conns.set(con);
+                con.setAutoCommit(false);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
         return con;
     }
 
-    public static void close(Connection con){
+    public static void commitAndClose(){
+        Connection con=conns.get();
         if (con != null){
             try {
-                con.close();
-            }catch (Exception e){
+                con.commit();
+            }catch (SQLException e){
                 e.printStackTrace();
+            }finally {
+                try {
+                    con.close();
+                }catch (SQLException e){
+                    e.printStackTrace();
+                }
             }
         }
+        conns.remove();
     }
+
+    public static void rollbackAndClose(){
+        Connection con=conns.get();
+        if (con != null){
+            try {
+                con.rollback();
+            }catch (SQLException e){
+                e.printStackTrace();
+            }finally {
+                try {
+                    con.close();
+                }catch (SQLException e){
+                    e.printStackTrace();
+                }
+            }
+        }
+        conns.remove();
+    }
+
+//    public static void close(Connection con){
+//        if (con != null){
+//            try {
+//                con.close();
+//            }catch (Exception e){
+//                e.printStackTrace();
+//            }
+//        }
+//    }
 
 }

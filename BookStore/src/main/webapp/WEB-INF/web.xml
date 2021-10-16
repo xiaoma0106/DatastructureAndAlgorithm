@@ -3,42 +3,42 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd"
          version="4.0">
-    
+
     <servlet>
         <servlet-name>RegistServlet</servlet-name>
         <servlet-class>com.mjh.web.servlet.controller.RegistServlet</servlet-class>
     </servlet>
-    
+
     <servlet>
         <servlet-name>LoginServlet</servlet-name>
         <servlet-class>com.mjh.web.servlet.controller.LoginServlet</servlet-class>
     </servlet>
-    
+
     <servlet>
         <servlet-name>UserServlet</servlet-name>
         <servlet-class>com.mjh.web.servlet.controller.UserServlet</servlet-class>
     </servlet>
-    
+
     <servlet>
         <servlet-name>BookServlet</servlet-name>
         <servlet-class>com.mjh.web.servlet.controller.BookServlet</servlet-class>
     </servlet>
-    
+
     <servlet-mapping>
         <servlet-name>RegistServlet</servlet-name>
         <url-pattern>/registServlet</url-pattern>
     </servlet-mapping>
-    
+
     <servlet-mapping>
         <servlet-name>LoginServlet</servlet-name>
         <url-pattern>/loginServlet</url-pattern>
     </servlet-mapping>
-    
+
     <servlet-mapping>
         <servlet-name>UserServlet</servlet-name>
         <url-pattern>/userServlet</url-pattern>
     </servlet-mapping>
-    
+
     <servlet-mapping>
         <servlet-name>BookServlet</servlet-name>
         <url-pattern>/manager/bookServlet</url-pattern>
@@ -52,6 +52,47 @@
         <servlet-name>ClientBookServlet</servlet-name>
         <url-pattern>/client/bookServlet</url-pattern>
     </servlet-mapping>
+
+    <servlet>
+        <servlet-name>KaptchaServlet</servlet-name>
+        <servlet-class>com.google.code.kaptcha.servlet.KaptchaServlet</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>KaptchaServlet</servlet-name>
+        <url-pattern>/kaptcha.jpg</url-pattern>
+    </servlet-mapping>
+
+    <!--过滤器配置-->
+    <filter>
+        <filter-name>ManagerFilter</filter-name>
+        <filter-class>com.mjh.filters.ManagerFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>ManagerFilter</filter-name>
+        <url-pattern>/manager/bookServlet</url-pattern>
+        <url-pattern>/pages/manager/*</url-pattern>
+    </filter-mapping>
+
+<!--    事务管理过滤器-->
+    <filter>
+        <filter-name>TransactionFilter</filter-name>
+        <filter-class>com.mjh.filters.TransactionFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>TransactionFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+
+    <error-page>
+        <error-code>404</error-code>
+        <location>/pages/error/error404.jsp</location>
+    </error-page>
+
+    <error-page>
+        <error-code>500</error-code>
+        <location>/pages/error/error500.jsp</location>
+    </error-page>
 
 
 </web-app>

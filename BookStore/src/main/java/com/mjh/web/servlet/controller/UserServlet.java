@@ -8,6 +8,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+import static com.google.code.kaptcha.Constants.KAPTCHA_SESSION_KEY;
+
 /**
  * @author mjh
  * @date 2021-10-03 18:23
@@ -26,18 +28,22 @@ public class UserServlet extends BaseServlet {
             req.setAttribute("username", username);
             req.getRequestDispatcher("/pages/user/login.jsp").forward(req, resp);
         } else {
+            req.getSession().setAttribute("user", user);
             req.getRequestDispatcher("/pages/user/login_success.jsp").forward(req, resp);
         }
     }
 
-    protected void regist(HttpServletRequest req,HttpServletResponse resp) throws ServletException,IOException{
+    protected void regist(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        String token = (String) req.getSession().getAttribute(KAPTCHA_SESSION_KEY);
+        req.getSession().removeAttribute(KAPTCHA_SESSION_KEY);
         String username = req.getParameter("username");
         String psd = req.getParameter("password");
         String repwd = req.getParameter("repwd");
         String email = req.getParameter("email");
         String code = req.getParameter("code");
+        User user = new User(username, psd, email);
 
-        if ("abcde".equals(code)) {
+        if (token != null && token.equalsIgnoreCase(code)) {
             if (userService.exitUsername(username)) {
                 String msg = "该用户名已存在!";
                 req.setAttribute("msg", msg);
@@ -45,9 +51,10 @@ public class UserServlet extends BaseServlet {
                 req.getRequestDispatcher("/pages/user/regist.jsp").forward(req, resp);
             } else {
                 if (psd.equals(repwd)) {
-                    userService.register(new User(username, psd, email));
+                    userService.register(user);
+                    req.getSession().setAttribute("user", user);
                     req.getRequestDispatcher("/pages/user/regist_success.jsp").forward(req, resp);
-                }else {
+                } else {
                     String msg = "两次输入密码不一致!";
                     req.setAttribute("msg", msg);
                     req.setAttribute("username", username);
@@ -62,5 +69,10 @@ public class UserServlet extends BaseServlet {
             req.setAttribute("email", email);
             req.getRequestDispatcher("/pages/user/regist.jsp").forward(req, resp);
         }
+    }
+
+    public void logout(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        req.getSession().invalidate();
+        resp.sendRedirect(req.getContextPath() + "/index.jsp");
     }
 }
