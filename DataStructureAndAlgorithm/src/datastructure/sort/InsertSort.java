@@ -18,17 +18,16 @@ public class InsertSort {
     public static void insertSort(int[] array) {
         int insertValue;
         int len = array.length;
+        int j = 0;
         for (int i = 1; i < len; i++) {
             insertValue = array[i];
-            int j = i - 1;
+            j = i - 1;
             while (j >= 0 && array[j] > insertValue) {
                 array[j + 1] = array[j];
                 j--;
             }
             //注意要替换的位置是比较的位置的前一个
-            if (j < i - 1) {
-                array[j + 1] = insertValue;
-            }
+            array[j + 1] = insertValue;
         }
     }
 }
