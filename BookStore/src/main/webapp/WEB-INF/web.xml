@@ -53,6 +53,7 @@
         <url-pattern>/client/bookServlet</url-pattern>
     </servlet-mapping>
 
+<!--    验证码设置-->
     <servlet>
         <servlet-name>KaptchaServlet</servlet-name>
         <servlet-class>com.google.code.kaptcha.servlet.KaptchaServlet</servlet-class>
@@ -62,6 +63,15 @@
         <servlet-name>KaptchaServlet</servlet-name>
         <url-pattern>/kaptcha.jpg</url-pattern>
     </servlet-mapping>
+    
+   <servlet>
+       <servlet-name>CartServlet</servlet-name>
+       <servlet-class>com.mjh.web.servlet.controller.CartServlet</servlet-class>
+   </servlet> 
+   <servlet-mapping>
+       <servlet-name>CartServlet</servlet-name>
+       <url-pattern>/cartServlet</url-pattern>
+   </servlet-mapping> 
 
     <!--过滤器配置-->
     <filter>
