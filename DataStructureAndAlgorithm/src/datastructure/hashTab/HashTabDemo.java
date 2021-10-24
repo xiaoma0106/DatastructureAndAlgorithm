@@ -19,6 +19,8 @@ public class HashTabDemo {
         hashTab.add(emp11);
         hashTab.list();
 
+        hashTab.findById(11);
+
     }
 }
 
