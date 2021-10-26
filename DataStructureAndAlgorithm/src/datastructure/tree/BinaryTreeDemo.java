@@ -355,8 +355,5 @@ class HeroNode {
                 parent.right = target;
             }
         }
-
     }
-
-
 }
