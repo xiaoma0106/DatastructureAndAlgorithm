@@ -4,6 +4,22 @@
 <head>
     <meta charset="UTF-8">
     <%@ include file="/pages/common/header.jsp" %>
+    <script type="text/javascript" >
+        $(function (){
+            $("#username").blur(function () {
+                var name=this.value;
+                $.getJSON("http://localhost:8080/BookStore/userServlet","action=ajaxExistUsername&username="+name,
+                function (data) {
+                    if(data.existUsername){
+                        $("span.errorMsg").html("该用户已存在,不可用!");
+                    }else{
+                        $("span.errorMsg").html("该用户可用!");
+                    }
+                });
+            });
+        });
+
+    </script>
     <title>尚硅谷会员注册页面</title>
     <style type="text/css">
         .login_form {

@@ -1,5 +1,6 @@
 package com.mjh.web.servlet.controller;
 
+import com.google.gson.Gson;
 import com.mjh.pojo.entity.domain.bean.User;
 import com.mjh.service.impl.UserServiceImpl;
 
@@ -7,6 +8,8 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 import static com.google.code.kaptcha.Constants.KAPTCHA_SESSION_KEY;
 
@@ -17,6 +20,19 @@ import static com.google.code.kaptcha.Constants.KAPTCHA_SESSION_KEY;
 public class UserServlet extends BaseServlet {
 
     UserServiceImpl userService = new UserServiceImpl();
+
+    protected void ajaxExistUsername(HttpServletRequest req,HttpServletResponse resp)throws ServletException,IOException{
+
+        String username=req.getParameter("username");
+        boolean existUsername = userService.exitUsername(username);
+
+        Map<String, Boolean> map=new HashMap<>();
+        map.put("existUsername",existUsername);
+
+        Gson gson=new Gson();
+        String data=gson.toJson(map);
+        resp.getWriter().write(data);
+    }
 
     protected void login(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String username = req.getParameter("username");

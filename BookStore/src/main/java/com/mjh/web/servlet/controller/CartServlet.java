@@ -1,5 +1,6 @@
 package com.mjh.web.servlet.controller;
 
+import com.google.gson.Gson;
 import com.mjh.pojo.entity.domain.bean.Book;
 import com.mjh.pojo.entity.domain.bean.Cart;
 import com.mjh.pojo.entity.domain.bean.CartItem;
@@ -11,6 +12,8 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @author mjh
@@ -66,7 +69,30 @@ public class CartServlet extends BaseServlet {
         req.getSession().setAttribute("lastName", lastName);
 //        req.getRequestDispatcher("/pages/client/index.jsp").forward(req, resp);
         resp.sendRedirect(req.getHeader("Referer"));
+    }
 
+    public void ajaxAddItem(HttpServletRequest req,HttpServletResponse resp)throws ServletException,IOException{
+        req.setCharacterEncoding("UTF-8");
+        resp.setContentType("text/html;charset=utf-8");
+        Integer bookId=WebUtils.parseInt(req.getParameter("id"),0);
+        Book book=bookService.queryBookById(bookId);
+        CartItem item=new CartItem(bookId,book.getName(),1,book.getPrice(),book.getPrice());
+        Cart cart=(Cart)req.getSession().getAttribute("cart");
+        if (cart == null){
+            cart= new Cart();
+            req.getSession().setAttribute("cart",cart);
+        }
+        cart.addItem(item);
 
+        String lastName=book.getName();
+        req.getSession().setAttribute("lastName",lastName);
+        Integer totalCount=cart.getTotalCount();
+        Map<String,String> map=new HashMap<>();
+        map.put("lastName",lastName);
+        map.put("totalCount",totalCount.toString());
+
+        Gson gson=new Gson();
+        String json=gson.toJson(map);
+        resp.getWriter().write(json);
     }
 }

@@ -72,6 +72,15 @@
        <servlet-name>CartServlet</servlet-name>
        <url-pattern>/cartServlet</url-pattern>
    </servlet-mapping> 
+    
+    <servlet>
+        <servlet-name>OrderServlet</servlet-name>
+        <servlet-class>com.mjh.web.servlet.controller.OrderServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>OrderServlet</servlet-name>
+        <url-pattern>/orderServlet</url-pattern>
+    </servlet-mapping>
 
     <!--过滤器配置-->
     <filter>
@@ -94,6 +103,7 @@
         <url-pattern>/*</url-pattern>
     </filter-mapping>
 
+<!--    发生错误时,跳转到特定错误页面-->
     <error-page>
         <error-code>404</error-code>
         <location>/pages/error/error404.jsp</location>
